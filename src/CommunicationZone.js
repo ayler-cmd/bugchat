@@ -3,13 +3,28 @@ import './App.css';
 import ChatZone from './ChatZone';
 import ContactWindow from './ContactWindow';
 import InputZone from './InputZone';
+import Contacts from './Contacts';
 
 const CommunicationZone = () => {
+  const [currentChat, setCurrentChat] = React.useState([
+    { sender: 'Bob Johnson', message: "Hey, what's up?" },
+    { sender: 'Coworker', message: 'Not much, just working. How about you?' },
+    { sender: 'Bob Johnson', message: 'Same here, just busy with work.' },
+  ]);
+
   const [state, setState] = React.useState({
     value: '',
     disposable: '',
-    history: ['How can I help?'],
+    history: currentChat.map((chat) => chat.message),
   });
+
+  React.useEffect(() => {
+    setState({
+      ...state,
+      history: currentChat.map((chat) => chat.message),
+    });
+  }, [currentChat]);
+
   const stateRef = React.useRef(state);
 
   function handleChange(event) {
@@ -98,14 +113,17 @@ const CommunicationZone = () => {
   }
 
   return (
-    <div className="chatHost innerShadow">
-      <ContactWindow />
-      <ChatZone chatItem={state.history} />
-      <InputZone
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        value={state.value}
-      />
+    <div className="wrapper">
+      <Contacts setCurrentChat={setCurrentChat} />
+      <div className="chatHost innerShadow">
+        <ContactWindow />
+        <ChatZone chatItem={state.history} />
+        <InputZone
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          value={state.value}
+        />
+      </div>
     </div>
   );
 };

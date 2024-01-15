@@ -15,7 +15,6 @@ module.exports = function (req, res) {
       return apires.json();
     })
     .then((data) => {
-      console.log(data['quota_remaining']);
       res.json(extractAnswer(data));
 
     })
@@ -29,6 +28,5 @@ function extractKeywords(message) {
 
 function extractAnswer(data) {
   // TODO: Implement answer extraction logic here
-  console.log(data);
   return data;
 }
